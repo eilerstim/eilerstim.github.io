@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the site
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Clone the Overleaf project
         id: clone
@@ -66,6 +66,12 @@ jobs:
           if [ -z "${main}" ] || [ ! -f "${main}" ]; then
             echo "::error::No .tex file with \\documentclass found at the project root. Set the CV_MAIN repository variable."
             exit 1
+          fi
+          # The LaTeX action splits root_file on whitespace, so a name with spaces is compiled from a copy.
+          if [[ "${main}" =~ [[:space:]] ]]; then
+            echo "Main file '${main}' contains whitespace; compiling a copy named cv-main.tex"
+            cp -- "${main}" cv-main.tex
+            main=cv-main.tex
           fi
           engine="${CV_ENGINE:-}"
           if [ -z "${engine}" ]; then
