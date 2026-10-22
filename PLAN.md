@@ -1,6 +1,6 @@
 # eilerstim.github.io — site plan
 
-Status: planned, not yet built. This file is the spec for the build and the record of every decision taken.
+Status: built (first version on the working branch). This file is the spec for the build and the record of every decision taken, including the revisions made after the first renders.
 
 ## 1. Decisions at a glance
 
@@ -12,8 +12,8 @@ Status: planned, not yet built. This file is the spec for the build and the reco
 | Sections | Trainer Card (about), Interests (photo album), Places (visited-country map), Projects, CV, Contact. No blog, skills bars or experience timeline in v1. |
 | You on the page | Real photo inside a pixel frame. No sprite of you. |
 | Interest photos | Natural photos inside pixel album frames with caption plates; click opens a lightbox. |
-| Theme | Light "day" and dark "night" palettes, chosen by the browser's `prefers-color-scheme`. No manual toggle in v1. |
-| Interaction level | Moderate: typewriter message boxes, a pixel marker that moves along a route as you scroll, opt-in 8-bit sounds, one hidden easter egg. Still an ordinary website. |
+| Theme | Four times of day like the DS games: morning, day, evening, night. Night uses the dark UI. Default follows the system dark preference, otherwise the visitor's clock; a sun/moon button cycles through them and remembers the choice. |
+| Interaction level | Moderate: typewriter message boxes, a pixel marker that moves along a route as you scroll, a flipping Trainer Card, parallax landscape, continent highlighting and a replay on the map, boxes that pop in on scroll, opt-in 8-bit sounds, one hidden easter egg. Still an ordinary website. |
 | Navigation | Two prototypes shipped behind a hidden switch (top menu in DP pause-menu style, and a Pokétch-style bottom bar). Decide on the live page, then delete the loser. |
 | Language | English only. |
 | Domain | eilerstim.github.io (GitHub Pages, deploy from `main`). Custom domain later needs only a `CNAME` file. |
@@ -33,7 +33,11 @@ Status: planned, not yet built. This file is the spec for the build and the reco
 
 ## 3. Visual system
 
-### 3.1 Palette (starting values, tuned during phase 1)
+### 3.1 Palette
+
+Revised after the first build: the page background is warm cream paper by day (`#F1E8D6` with faint pixel dots) and navy by night, never light blue. Each section owns an accent used on its signpost icon, title underline, buttons, stats and nav icon: About blue `#3D63B8`, Interests green `#3E9A4F`, Places teal `#2B8FA8`, Projects orange `#E07B2A`, CV purple `#7A4FB5`, Contact pink `#D14F8A`. Visited countries are red-orange `#E8572A` on blue water. The hero landscape has its own palette per time of day (sky, clouds, mountains, trees, grass), defined in `assets/css/tokens.css`.
+
+Original table, kept for the UI tokens that still apply:
 
 | Token | Day (light) | Night (dark) | Used for |
 |---|---|---|---|
@@ -62,14 +66,16 @@ Contrast target: 4.5:1 for all text in both themes, checked in phase 1.
 
 | Component | Description |
 |---|---|
+| Hero scene | Layered pixel landscape behind the hero: sky gradient, drifting clouds (two speeds), mountains with snow caps, tree line, grass strip, sun or moon, stars at night. Tiles are generated procedurally by `scripts/gen-art.mjs` as SVG patterns coloured through CSS variables, so one set of art serves all four times of day. Mountains, trees and sun move with scroll parallax. |
+| Signpost | Wooden sign plate with the section icon in the section colour and the kicker word, on a short post; replaces the plain kicker label. |
 | Message box | White panel, 2px dark border plus 1px inner light line, pixel-rounded corners via a 9-slice `border-image`. Typewriter text with a blinking advance arrow; click to skip. |
 | Menu strip | Navy strip with white DotGothic16 labels, active item marked by a pixel cursor. Basis of the top-navigation prototype. |
-| Trainer Card | 3:2 card with an accent header strip. Left: your photo in a pixel frame. Right: label/value rows with dotted leaders: NAME, LOCATION, ROLE, ADVENTURE STARTED, LANGUAGES. Bottom: 8 badge slots, filled slots show 16×16 pixel badges for degrees or certifications with a tooltip. Slight 3D tilt on hover (off under reduced motion). |
+| Trainer Card | Two-sided card. Front: accent header, your photo in a pixel frame, label/value rows with dotted leaders (NAME, LOCATION, ROLE, STARTED, LANGUAGES) and 8 badge slots. Back (click or the FLIP button): a RECORD with live counts of countries, continents, interests and projects. Slight 3D tilt on hover (off under reduced motion). |
 | Bottom bar | Fixed bar in a teal watch-style frame with an LCD-green screen. Six pixel icons (card, album, map, folder, document, mail) plus a sound toggle. Active icon inverted. Basis of the bottom-navigation prototype. |
-| Album frame | Cream matte with 2px border and corner tabs; caption plate underneath in DotGothic16. Photo stays natural. |
+| Album frame | Cream matte with 2px border and corner tabs, a red pushpin at the top, caption plate underneath in DotGothic16. Lifts on hover. Photo stays natural. |
 | Buttons | Raised pixel buttons; primary in `--accent`; press moves them 1px down with an optional blip. |
 | Route and marker | A dotted pixel route with one square node per section. A small original pixel pin advances with scroll progress and nodes light up when reached. In the top-menu prototype the route runs under the menu; in the bottom-bar prototype it rides along the bar's top edge. |
-| Map | Dot-matrix world map (one pixel square per land cell), visited countries in `--accent`, hover or tap names the country. |
+| Map | Dot-matrix world map on animated pixel water, visited countries in red-orange, hover or tap names the country, click names it in a message box, hovering a continent in the list highlights its countries, and a Replay button lights the visited countries up one by one. |
 | Lightbox | Native `<dialog>`, pixel frame, ESC and backdrop click close it. |
 
 ### 3.4 Motion and sound
@@ -78,6 +84,7 @@ Contrast target: 4.5:1 for all text in both themes, checked in phase 1.
 - Marker movement, card tilt and section reveals are CSS transforms only; all disabled under reduced motion.
 - Three short original 8-bit sounds (select, confirm, back) generated by a script in `scripts/`, played through WebAudio. Off by default; the toggle in the bar or menu turns them on, and the choice is stored in `localStorage`.
 - Easter egg: the Konami code switches the Trainer Card to its "black card" tier for the session and opens one hidden message box. Nothing else references it.
+- Boxes below the hero pop in with a stepped fade the first time they scroll into view; a bouncing arrow at the bottom of the hero hints at scrolling and disappears once you do.
 
 ## 4. Page structure
 

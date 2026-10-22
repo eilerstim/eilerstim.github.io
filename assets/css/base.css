@@ -27,15 +27,11 @@ body {
   background-image:
     radial-gradient(circle at 12% 18%, var(--star) 0 1px, transparent 1.5px),
     radial-gradient(circle at 68% 9%, var(--star) 0 1px, transparent 1.5px),
-    radial-gradient(circle at 41% 33%, var(--star) 0 1px, transparent 1.5px),
-    radial-gradient(circle at 88% 27%, var(--star) 0 1px, transparent 1.5px),
-    radial-gradient(circle at 23% 61%, var(--star) 0 1px, transparent 1.5px),
-    radial-gradient(circle at 77% 71%, var(--star) 0 1px, transparent 1.5px),
-    radial-gradient(circle at 55% 88%, var(--star) 0 1px, transparent 1.5px),
-    radial-gradient(circle at 6% 92%, var(--star) 0 1px, transparent 1.5px),
-    linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
-  background-size: 420px 420px, 420px 420px, 420px 420px, 420px 420px, 420px 420px, 420px 420px, 420px 420px, 420px 420px, 100% 100%;
-  background-attachment: fixed;
+    radial-gradient(circle at 41% 63%, var(--star) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 88% 37%, var(--star) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 23% 81%, var(--star) 0 1px, transparent 1.5px),
+    radial-gradient(var(--bg-dot) 1px, transparent 1.4px);
+  background-size: 420px 420px, 420px 420px, 420px 420px, 420px 420px, 420px 420px, 14px 14px;
   min-height: 100vh;
 }
 img, svg { max-width: 100%; }
@@ -43,9 +39,10 @@ img { height: auto; }
 a { color: var(--accent); text-decoration-thickness: var(--px); text-underline-offset: 0.2em; }
 a:hover { color: var(--accent-2); }
 h1, h2, h3, h4, .pixel { font-family: var(--font-pixel); font-weight: 400; letter-spacing: 0.02em; line-height: 1.25; margin: 0; }
-h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); }
-h2 { font-size: clamp(1.35rem, 3vw, 1.9rem); }
-h3 { font-size: 1.15rem; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1rem; }
+@media (min-width: 720px) { h2 { font-size: 2rem; } }
 p { margin: 0 0 1em; }
 p:last-child { margin-bottom: 0; }
 ul, ol { margin: 0; padding: 0; list-style: none; }
@@ -58,7 +55,6 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .section { padding-block: 3rem; scroll-margin-top: calc(var(--nav-h) + 1rem); }
 .section--hero { padding-top: 2rem; }
 .section__head { margin-bottom: 1.5rem; }
-.section__kicker { display: inline-block; font-family: var(--font-pixel); font-size: 0.75rem; letter-spacing: 0.12em; color: var(--on-navy); background: var(--navy); padding: calc(var(--px) * 1) calc(var(--px) * 4); margin-bottom: 0.5rem; box-shadow: var(--shadow-px); }
 .section__lead { color: var(--text-muted); max-width: 46rem; margin-top: 0.5rem; }
 .muted { color: var(--text-muted); }
 .pixelated { image-rendering: pixelated; image-rendering: crisp-edges; }

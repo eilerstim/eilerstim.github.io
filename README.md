@@ -34,6 +34,6 @@ scripts/photos.sh ~/Pictures/trip.jpg ~/Pictures/climbing.png   # writes WebP fi
 
 ## Previewing
 
-Any static server works, for example `npx serve .` or `python3 -m http.server`. Useful URL parameters while developing: `?theme=light|dark` forces a theme, `?nav=top|bottom|auto` picks a navigation prototype (also Shift+N three times on the page).
+Any static server works, for example `npx serve .` or `python3 -m http.server`. Useful URL parameters while developing: `?theme=morning|day|evening|night` (or `light|dark`) forces a time of day, `?nav=top|bottom|auto` picks a navigation prototype (also Shift+N three times on the page). The sun/moon button in the navigation cycles the time of day and remembers the choice.
 
 Font: DotGothic16 by Fontworks, SIL Open Font License (`assets/fonts/OFL.txt`). Map data: Natural Earth (public domain).

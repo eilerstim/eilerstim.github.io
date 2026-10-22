@@ -184,5 +184,12 @@ export async function loadAll() {
   renderSite(site);
   renderInterests(interests.items);
   renderProjects(projects.items);
-  await Promise.all([renderCV(site.cv), initMap(visited, countries)]);
+  const [, mapStats] = await Promise.all([renderCV(site.cv), initMap(visited, countries)]);
+  const stats = {
+    countries: mapStats?.countries ?? (visited.countries || []).length,
+    continents: mapStats?.continents ?? 0,
+    interests: (interests.items || []).length,
+    projects: (projects.items || []).length,
+  };
+  for (const [k, v] of Object.entries(stats)) setText(`[data-stat="${k}"]`, String(v));
 }

@@ -1,18 +1,33 @@
-/* Design tokens. Day palette by default, night palette by system preference or data-theme. */
+/* Design tokens. Day UI by default; night UI by system preference or data-theme="dark".
+   The hero scene follows data-time (morning | day | evening | night), set by assets/js/theme.js. */
 :root {
   color-scheme: light dark;
   --px: 2px;
 
-  --bg: #D9EEF9;
-  --bg-2: #BFE0F3;
+  /* section and decoration colours */
+  --c-blue: #3D63B8;
+  --c-green: #3E9A4F;
+  --c-teal: #2B8FA8;
+  --c-orange: #E07B2A;
+  --c-purple: #7A4FB5;
+  --c-pink: #D14F8A;
+  --c-wood: #8B5A2B;
+  --c-wood-hi: #C08A52;
+  --c-wood-lo: #5C3A1A;
+  --c-wood-ink: #3B2412;
+  --highlight: #FFD86B;
+
+  /* day UI */
+  --bg: #F1E8D6;
+  --bg-dot: #DED2B8;
   --surface: #FFFFFF;
   --surface-2: #F3F6FA;
   --border: #2F3A4F;
   --border-soft: #8C96A8;
   --text: #1E2430;
   --text-muted: #5B6678;
-  --accent: #3D63B8;
-  --accent-2: #D15A9B;
+  --accent: var(--c-blue);
+  --accent-2: var(--c-pink);
   --on-accent: #FFFFFF;
   --navy: #1F2D52;
   --navy-2: #3A4B7A;
@@ -22,14 +37,36 @@
   --bar-line: #2B6B64;
   --bar-screen: #CFE7B4;
   --bar-ink: #1E3A2F;
-  --land: #D8C9A0;
-  --water: #7FB7E6;
-  --water-line: #6FA6D8;
+  --land: #D9CBA2;
+  --water: #5EA9DC;
+  --visited: #E8572A;
   --cream: #F4EBD3;
   --star: transparent;
-  --card-head: var(--accent);
+  --card-head: var(--c-blue);
   --card-head-text: #FFFFFF;
-  --highlight: #FFD86B;
+
+  /* scene: day */
+  --sky-top: #2F6FC8;
+  --sky-bottom: #86BCEC;
+  --sun: #FFD54A;
+  --sun-2: #F2A33A;
+  --moon: #F4EFD3;
+  --moon-2: #CFC8A8;
+  --cloud: #FFFFFF;
+  --cloud-2: #D7E6F3;
+  --mount: #7D9BBF;
+  --mount-2: #5A769B;
+  --snow: #F2F6FA;
+  --tree: #3F9A4F;
+  --tree-hi: #7BC66A;
+  --tree-lo: #2A6E38;
+  --trunk: #6B4423;
+  --grass: #5FB356;
+  --grass-hi: #8ED47A;
+  --grass-lo: #3F8A3C;
+  --pin: #E0473A;
+  --pin-2: #9E2B22;
+  --pin-3: #8C96A8;
 
   --font-pixel: "DotGothic16", "Courier New", monospace;
   --font-text: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -42,7 +79,7 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #0F1B33;
-    --bg-2: #0B1428;
+    --bg-dot: #182645;
     --surface: #1B2742;
     --surface-2: #223052;
     --border: #AFC0DF;
@@ -60,38 +97,107 @@
     --bar-screen: #9CC58B;
     --bar-ink: #10261D;
     --land: #3D4A6E;
-    --water: #16223F;
-    --water-line: #1E2D52;
+    --water: #17304F;
+    --visited: #FF8A5B;
     --cream: #CFC6AE;
     --star: #DCE5F5;
     --card-head: #2F4E94;
+    --c-blue: #5B86E0;
+    --c-purple: #8A62C4;
+    --c-orange: #D8762A;
     --shadow-px: 0 var(--px) 0 rgba(0, 0, 0, 0.45);
+
+    --sky-top: #070D1F;
+    --sky-bottom: #1D2C55;
+    --cloud: #4A5C86;
+    --cloud-2: #35466B;
+    --mount: #243354;
+    --mount-2: #182440;
+    --snow: #B9C6E3;
+    --tree: #1F4A36;
+    --tree-hi: #2E6B46;
+    --tree-lo: #143022;
+    --trunk: #3E2A18;
+    --grass: #22563A;
+    --grass-hi: #2F7049;
+    --grass-lo: #173D2A;
+    --pin-3: #A9B6CE;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0F1B33;
-  --bg-2: #0B1428;
-  --surface: #1B2742;
-  --surface-2: #223052;
-  --border: #AFC0DF;
-  --border-soft: #5C6E96;
-  --text: #EDF1F8;
-  --text-muted: #A9B6CE;
-  --accent: #7EA6FF;
-  --accent-2: #FF8FC8;
-  --on-accent: #FFFFFF;
-  --navy: #0B1428;
-  --navy-2: #263656;
-  --navy-line: #8EA3CF;
-  --bar: #2E6A64;
-  --bar-line: #1E4B46;
-  --bar-screen: #9CC58B;
-  --bar-ink: #10261D;
-  --land: #3D4A6E;
-  --water: #16223F;
-  --water-line: #1E2D52;
-  --cream: #CFC6AE;
-  --star: #DCE5F5;
-  --card-head: #2F4E94;
-  --shadow-px: 0 var(--px) 0 rgba(0, 0, 0, 0.45);
+    --bg: #0F1B33;
+    --bg-dot: #182645;
+    --surface: #1B2742;
+    --surface-2: #223052;
+    --border: #AFC0DF;
+    --border-soft: #5C6E96;
+    --text: #EDF1F8;
+    --text-muted: #A9B6CE;
+    --accent: #7EA6FF;
+    --accent-2: #FF8FC8;
+    --on-accent: #FFFFFF;
+    --navy: #0B1428;
+    --navy-2: #263656;
+    --navy-line: #8EA3CF;
+    --bar: #2E6A64;
+    --bar-line: #1E4B46;
+    --bar-screen: #9CC58B;
+    --bar-ink: #10261D;
+    --land: #3D4A6E;
+    --water: #17304F;
+    --visited: #FF8A5B;
+    --cream: #CFC6AE;
+    --star: #DCE5F5;
+    --card-head: #2F4E94;
+    --c-blue: #5B86E0;
+    --c-purple: #8A62C4;
+    --c-orange: #D8762A;
+    --shadow-px: 0 var(--px) 0 rgba(0, 0, 0, 0.45);
+
+    --sky-top: #070D1F;
+    --sky-bottom: #1D2C55;
+    --cloud: #4A5C86;
+    --cloud-2: #35466B;
+    --mount: #243354;
+    --mount-2: #182440;
+    --snow: #B9C6E3;
+    --tree: #1F4A36;
+    --tree-hi: #2E6B46;
+    --tree-lo: #143022;
+    --trunk: #3E2A18;
+    --grass: #22563A;
+    --grass-hi: #2F7049;
+    --grass-lo: #173D2A;
+    --pin-3: #A9B6CE;
+}
+
+html[data-time="morning"]:not([data-theme="dark"]) {
+  --sky-top: #E39A74;
+  --sky-bottom: #FBE6C8;
+  --mount: #B38DA9;
+  --mount-2: #8A6A8E;
+  --snow: #FBEDE4;
+  --cloud: #FFF4EA;
+  --cloud-2: #EBD3C8;
+  --grass: #6DB85E;
+  --grass-hi: #98D784;
+  --sun: #FFC94A;
+  --sun-2: #EE8A3A;
+}
+html[data-time="evening"]:not([data-theme="dark"]) {
+  --sky-top: #4E3A8C;
+  --sky-bottom: #F2A871;
+  --mount: #8A5E8C;
+  --mount-2: #5E3F6B;
+  --snow: #F6D9D0;
+  --cloud: #FFE1C9;
+  --cloud-2: #E8A98F;
+  --tree: #2F7A44;
+  --tree-hi: #5BAA5A;
+  --tree-lo: #1F5230;
+  --grass: #4C9A48;
+  --grass-hi: #74BD66;
+  --grass-lo: #336E33;
+  --sun: #FF8E4A;
+  --sun-2: #E0523A;
 }

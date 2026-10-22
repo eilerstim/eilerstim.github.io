@@ -23,8 +23,8 @@ html[data-nav="top"] .nav-top { display: block; }
   gap: 0.4rem;
   padding: 0.55rem 0.7rem;
   font-family: var(--font-pixel);
-  font-size: 0.9rem;
-  letter-spacing: 0.08em;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--on-navy);
   text-decoration: none;
@@ -68,7 +68,9 @@ html[data-nav="top"] .nav-top { display: block; }
   transition: transform 0.12s linear;
   filter: drop-shadow(0 var(--px) 0 rgba(0, 0, 0, 0.45));
 }
-.nav-top .sfx-toggle { margin-left: 0.25rem; }
+.nav-top .sfx-toggle, .nav-top .tod-toggle { margin-left: 0.1rem; }
+.nav-top .nav-link.is-reached::after { background: var(--nav-c, var(--highlight)); }
+.nav-top .nav-link.is-active .nav-link__cursor { color: var(--highlight); }
 
 .nav-top__toggle { display: none; align-items: center; justify-content: center; width: 2.4rem; height: 2.4rem; color: var(--on-navy); }
 .nav-top__toggle span { width: 18px; height: 14px; background: repeating-linear-gradient(to bottom, currentColor 0 var(--px), transparent var(--px) calc(3 * var(--px))); }
@@ -92,5 +94,5 @@ html[data-nav="top"] .nav-top { display: block; }
   html[data-nav="top"] .nav-top__list::after,
   html[data-nav="top"] .nav-top .nav-link::after,
   html[data-nav="top"] .nav-top .route__marker { display: none; }
-  html[data-nav="top"] .nav-top .nav-link { padding: 0.7rem 0.5rem; font-size: 1rem; }
+  html[data-nav="top"] .nav-top .nav-link { padding: 0.7rem 0.5rem; }
 }

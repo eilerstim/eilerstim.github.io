@@ -48,7 +48,14 @@ html[data-nav="bottom"] body { padding-bottom: calc(var(--bar-h) + env(safe-area
 .nav-bottom .nav-link__cursor { display: none; }
 .nav-bottom .nav-link__icon { width: 24px; height: 24px; display: block; }
 .nav-bottom .nav-link__label { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.nav-bottom .nav-link.is-active .nav-link__icon { background: var(--bar-ink); color: var(--bar-screen); }
+.nav-bottom .nav-link__icon { color: var(--nav-c, var(--bar-ink)); }
+.nav-bottom .nav-link.is-active .nav-link__icon { background: var(--nav-c, var(--bar-ink)); color: var(--bar-screen); box-shadow: 0 0 0 var(--px) var(--bar-ink); }
+.nav-link[href="#about"] { --nav-c: var(--c-blue); }
+.nav-link[href="#interests"] { --nav-c: var(--c-green); }
+.nav-link[href="#places"] { --nav-c: var(--c-teal); }
+.nav-link[href="#projects"] { --nav-c: var(--c-orange); }
+.nav-link[href="#cv"] { --nav-c: var(--c-purple); }
+.nav-link[href="#contact"] { --nav-c: var(--c-pink); }
 
 /* route along the top edge of the screen */
 .nav-bottom__list::before {
@@ -82,9 +89,9 @@ html[data-nav="bottom"] body { padding-bottom: calc(var(--bar-h) + env(safe-area
   z-index: 2;
   transition: transform 0.12s linear;
 }
-.nav-bottom .sfx-toggle {
+.nav-bottom .sfx-toggle, .nav-bottom .tod-toggle {
   flex: none;
-  width: 2.6rem;
+  width: 2.5rem;
   height: auto;
   border-left: var(--px) solid var(--bar-ink);
   color: var(--bar-ink);
