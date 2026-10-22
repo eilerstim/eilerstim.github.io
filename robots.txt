@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://eilerstim.github.io/sitemap.xml

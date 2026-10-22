@@ -1,0 +1,46 @@
+/* ---------- hero ---------- */
+.hero { display: grid; gap: 1.5rem; align-items: start; }
+.hero__side { display: grid; gap: 1rem; align-content: start; }
+.hero__name { font-size: clamp(1.9rem, 5vw, 2.7rem); line-height: 1.1; }
+.hero__tagline { color: var(--text-muted); font-size: 1.05rem; margin: 0; }
+.hero__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.bio { margin-top: 1.5rem; max-width: 60rem; }
+@media (min-width: 860px) {
+  .hero { grid-template-columns: minmax(20rem, 25rem) 1fr; gap: 2.25rem; }
+}
+
+/* ---------- interests ---------- */
+.album { display: grid; gap: 1.25rem; }
+@media (min-width: 720px) { .album { grid-template-columns: repeat(2, 1fr); } }
+
+/* ---------- places ---------- */
+.places { display: grid; gap: 1.25rem; }
+.map { padding: 0.5rem; position: relative; overflow: hidden; }
+.map svg { display: block; width: 100%; height: auto; }
+.map .land { fill: var(--land); transition: fill 0.15s; }
+.map .land.is-visited { fill: var(--accent); }
+.map .land:hover { fill: var(--accent-2); }
+.map-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr)); gap: 0.75rem; }
+.map-lists { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr)); }
+.map-list h3 { display: flex; justify-content: space-between; gap: 0.5rem; font-size: 0.9rem; letter-spacing: 0.08em; text-transform: uppercase; border-bottom: var(--px) dotted var(--border-soft); padding-bottom: 0.3rem; margin-bottom: 0.5rem; }
+.map-list h3 span { color: var(--accent); }
+.map-list li { font-size: 0.95rem; padding: 0.1rem 0; }
+.map__note { font-family: var(--font-pixel); font-size: 0.85rem; color: var(--text-muted); margin: 0; }
+.map__note[hidden] { display: none; }
+
+/* ---------- projects ---------- */
+.projects { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); }
+
+/* ---------- cv ---------- */
+.cv-box { display: grid; gap: 1rem; justify-items: start; max-width: 42rem; }
+.cv-box__status { font-family: var(--font-pixel); font-size: 0.95rem; }
+.cv-box__actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+/* ---------- contact ---------- */
+.contact { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+.contact__note { color: var(--text-muted); margin-top: 1rem; font-size: 0.95rem; }
+
+/* ---------- footer ---------- */
+.footer { padding: 2rem 0 3rem; color: var(--text-muted); font-size: 0.9rem; border-top: var(--px) dotted var(--border-soft); margin-top: 2rem; }
+.footer p { margin: 0 0 0.4rem; }
+.footer a { color: inherit; }

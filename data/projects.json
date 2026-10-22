@@ -1,0 +1,26 @@
+{
+  "_todo": "Curated list, 3 to 6 entries. image is optional (16:9, WebP in assets/photos/).",
+  "items": [
+    {
+      "name": "This page",
+      "blurb": "A personal site in a DS-era pixel style: static HTML, CSS and vanilla JS, with the CV compiled from Overleaf by a GitHub Action.",
+      "tags": ["HTML", "CSS", "JavaScript", "GitHub Actions"],
+      "url": "https://github.com/eilerstim/eilerstim.github.io",
+      "year": 2026
+    },
+    {
+      "name": "Project two",
+      "blurb": "Placeholder. Replace with a real project in data/projects.json.",
+      "tags": ["Tag"],
+      "url": "https://github.com/eilerstim",
+      "year": 2025
+    },
+    {
+      "name": "Project three",
+      "blurb": "Placeholder. Each card takes a name, a one-liner, tags, a link and a year.",
+      "tags": ["Tag", "Tag"],
+      "url": "https://github.com/eilerstim",
+      "year": 2024
+    }
+  ]
+}

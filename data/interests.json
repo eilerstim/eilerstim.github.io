@@ -1,0 +1,38 @@
+{
+  "_todo": "One entry per interest, 3 to 6 entries, 1 to 3 photos each. Photos go in assets/photos/ as WebP (see scripts/photos.sh). Every photo needs alt text.",
+  "items": [
+    {
+      "id": "travel",
+      "title": "Travelling",
+      "blurb": "Collecting countries one trip at a time. The map further down keeps the score.",
+      "photos": [
+        { "src": "assets/img/placeholder-photo.svg", "alt": "Placeholder for a photo of Tim travelling", "caption": "Photo to come" }
+      ]
+    },
+    {
+      "id": "interest-2",
+      "title": "Second interest",
+      "blurb": "Placeholder. Replace the title, this sentence and the photo in data/interests.json.",
+      "photos": [
+        { "src": "assets/img/placeholder-photo.svg", "alt": "Placeholder photo", "caption": "Photo to come" }
+      ]
+    },
+    {
+      "id": "interest-3",
+      "title": "Third interest",
+      "blurb": "Placeholder. Each interest can carry up to three photos.",
+      "photos": [
+        { "src": "assets/img/placeholder-photo.svg", "alt": "Placeholder photo", "caption": "Photo to come" },
+        { "src": "assets/img/placeholder-photo.svg", "alt": "Placeholder photo", "caption": "Photo to come" }
+      ]
+    },
+    {
+      "id": "interest-4",
+      "title": "Fourth interest",
+      "blurb": "Placeholder. Delete this entry if three interests are enough.",
+      "photos": [
+        { "src": "assets/img/placeholder-photo.svg", "alt": "Placeholder photo", "caption": "Photo to come" }
+      ]
+    }
+  ]
+}

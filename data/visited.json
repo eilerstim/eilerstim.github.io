@@ -1,0 +1,7 @@
+{
+  "_todo": "ISO 3166-1 alpha-2 codes. Run `node scripts/been-to-iso.mjs names.txt` with the country names copied from the been app, or add codes by hand. Set denominator to the country count been uses so the percentage matches, and remove the placeholder flag once the real list is in.",
+  "placeholder": true,
+  "denominator": 195,
+  "updated": "2026-10-22",
+  "countries": ["CH"]
+}

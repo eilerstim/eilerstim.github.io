@@ -1,0 +1,128 @@
+name: CV from Overleaf
+
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/cv.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cv-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the site
+        uses: actions/checkout@v4
+
+      - name: Clone the Overleaf project
+        id: clone
+        env:
+          OVERLEAF_GIT_TOKEN: ${{ secrets.OVERLEAF_GIT_TOKEN }}
+          OVERLEAF_PROJECT_ID: ${{ secrets.OVERLEAF_PROJECT_ID }}
+        run: |
+          set -euo pipefail
+          if [ -z "${OVERLEAF_GIT_TOKEN}" ] || [ -z "${OVERLEAF_PROJECT_ID}" ]; then
+            echo "::error::OVERLEAF_GIT_TOKEN and OVERLEAF_PROJECT_ID must be set as repository secrets."
+            exit 1
+          fi
+          # Credentials go through a helper so the token never lands in a URL or in .git/config.
+          git -c credential.helper= \
+              -c credential.helper='!f() { echo "username=git"; echo "password=${OVERLEAF_GIT_TOKEN}"; }; f' \
+              clone --quiet "https://git.overleaf.com/${OVERLEAF_PROJECT_ID}" cv-src
+          sha="$(git -C cv-src rev-parse HEAD)"
+          echo "sha=${sha}" >> "$GITHUB_OUTPUT"
+          if [ -f cv/.built-from ] && [ "$(cat cv/.built-from)" = "${sha}" ] && [ -f cv/Tim-Eilers-CV.pdf ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Overleaf source unchanged (${sha}); nothing to do."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Detect main file and engine
+        id: detect
+        if: steps.clone.outputs.changed == 'true'
+        env:
+          CV_MAIN: ${{ vars.CV_MAIN }}
+          CV_ENGINE: ${{ vars.CV_ENGINE }}
+        run: |
+          set -euo pipefail
+          cd cv-src
+          main="${CV_MAIN:-}"
+          if [ -z "${main}" ]; then
+            if [ -f main.tex ] && grep -q '\\documentclass' main.tex; then
+              main=main.tex
+            else
+              main="$(grep -lE '^[[:space:]]*\\documentclass' *.tex 2>/dev/null | head -n 1 || true)"
+            fi
+          fi
+          if [ -z "${main}" ] || [ ! -f "${main}" ]; then
+            echo "::error::No .tex file with \\documentclass found at the project root. Set the CV_MAIN repository variable."
+            exit 1
+          fi
+          engine="${CV_ENGINE:-}"
+          if [ -z "${engine}" ]; then
+            magic="$(grep -ohE '^%[[:space:]]*!TEX[[:space:]]+(TS-)?program[[:space:]]*=[[:space:]]*[a-zA-Z]+' "${main}" | head -n 1 | sed -E 's/.*=[[:space:]]*//' | tr 'A-Z' 'a-z' || true)"
+            if [ -n "${magic}" ]; then
+              engine="${magic}"
+            elif grep -rqE '\\usepackage(\[[^]]*\])?\{[^}]*(fontspec|unicode-math|polyglossia)' --include='*.tex' --include='*.cls' --include='*.sty' .; then
+              engine=xelatex
+            else
+              engine=pdflatex
+            fi
+          fi
+          case "${engine}" in
+            pdflatex|xelatex|lualatex) ;;
+            *) echo "::error::Unsupported engine '${engine}'. Use pdflatex, xelatex or lualatex."; exit 1 ;;
+          esac
+          echo "main=${main}" >> "$GITHUB_OUTPUT"
+          echo "engine=${engine}" >> "$GITHUB_OUTPUT"
+          echo "xelatex=$([ "${engine}" = xelatex ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+          echo "lualatex=$([ "${engine}" = lualatex ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+          echo "Compiling ${main} with ${engine}"
+
+      - name: Compile the CV
+        if: steps.clone.outputs.changed == 'true'
+        uses: xu-cheng/latex-action@v3
+        with:
+          working_directory: cv-src
+          root_file: ${{ steps.detect.outputs.main }}
+          latexmk_use_xelatex: ${{ steps.detect.outputs.xelatex }}
+          latexmk_use_lualatex: ${{ steps.detect.outputs.lualatex }}
+          latexmk_shell_escape: true
+
+      - name: Publish the PDF into cv/
+        if: steps.clone.outputs.changed == 'true'
+        env:
+          SHA: ${{ steps.clone.outputs.sha }}
+          MAIN: ${{ steps.detect.outputs.main }}
+        run: |
+          set -euo pipefail
+          pdf="cv-src/${MAIN%.tex}.pdf"
+          if [ ! -s "${pdf}" ]; then
+            echo "::error::Compilation produced no PDF at ${pdf}."
+            exit 1
+          fi
+          mkdir -p cv
+          cp "${pdf}" cv/Tim-Eilers-CV.pdf
+          bytes="$(stat -c %s cv/Tim-Eilers-CV.pdf)"
+          printf '%s\n' "${SHA}" > cv/.built-from
+          printf '{\n  "updated": "%s",\n  "sourceCommit": "%s",\n  "bytes": %s\n}\n' \
+            "$(date -u +%Y-%m-%d)" "${SHA}" "${bytes}" > cv/meta.json
+          rm -rf cv-src
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add cv/Tim-Eilers-CV.pdf cv/.built-from cv/meta.json
+          if git diff --cached --quiet; then
+            echo "PDF unchanged; nothing to commit."
+            exit 0
+          fi
+          git commit -m "cv: publish PDF built from Overleaf ${SHA:0:12}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"

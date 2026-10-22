@@ -1,0 +1,30 @@
+{
+  "_todo": "Replace every value marked (inferred) or (placeholder). Keys starting with _ are ignored by the page.",
+  "name": "Tim Eilers",
+  "tagline": "Places, interests and side projects, off the clock.",
+  "_tagline": "(placeholder) one line under the name",
+  "location": "Switzerland",
+  "_location": "(inferred from the .ch domain)",
+  "role": "Cybersecurity",
+  "_role": "(inferred) job title or field shown on the card",
+  "adventureStarted": "",
+  "_adventureStarted": "(missing) year your career or studies began, e.g. 2018",
+  "languages": ["German", "English"],
+  "_languages": "(inferred) languages you speak",
+  "badges": [],
+  "_badges": "(missing) up to 8 entries like {\"label\": \"MSc Computer Science\", \"year\": 2022, \"icon\": \"book\"}; icons: shield, star, book, trophy",
+  "greeting": "Hi, I'm Tim. Welcome to my page. Scroll on to see where I've been, what I do when I'm not working, and a few things I've built.",
+  "bio": "I work in cybersecurity and live in Switzerland. This page collects the things I do outside work: the places I've travelled to, the interests that fill my weekends, and a few side projects. My CV is here too, for those who are after the professional side.",
+  "_bio": "(inferred, placeholder) two to four sentences",
+  "emailParts": ["hello", "example.com"],
+  "_emailParts": "(missing) local part and domain of the address to display, e.g. [\"tim\", \"example.ch\"]",
+  "github": "https://github.com/eilerstim",
+  "linkedin": "",
+  "_linkedin": "(missing) full LinkedIn profile URL",
+  "cv": {
+    "file": "cv/Tim-Eilers-CV.pdf",
+    "label": "Download CV (PDF)",
+    "alternates": []
+  },
+  "_cv": "alternates: extra files like {\"file\": \"cv/Tim-Eilers-CV-de.pdf\", \"label\": \"Lebenslauf (PDF)\"}"
+}
