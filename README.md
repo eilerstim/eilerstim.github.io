@@ -30,10 +30,13 @@ scripts/photos.sh ~/Pictures/trip.jpg ~/Pictures/climbing.png   # writes WebP fi
 
 - `node scripts/gen-art.mjs && node scripts/inline-sprite.mjs` regenerates the pixel icons, frames and placeholders from the ASCII grids in `scripts/gen-art.mjs`.
 - `node scripts/build-map.mjs` rebuilds the dot-map from Natural Earth data (downloaded on first run).
+- `node scripts/build-zones.mjs` rebuilds the time-zone table (downloads the tz database files on first run).
 - `node scripts/og-image.mjs` renders `assets/img/og.png` for link previews (needs Playwright).
 
 ## Previewing
 
-Any static server works, for example `npx serve .` or `python3 -m http.server`. Useful URL parameters while developing: `?theme=morning|day|evening|night` (or `light|dark`) forces a time of day, `?nav=top|bottom|auto` picks a navigation prototype (also Shift+N three times on the page). The sun/moon button in the navigation cycles the time of day and remembers the choice.
+Any static server works, for example `npx serve .` or `python3 -m http.server`. Useful URL parameters while developing: `?theme=morning|day|evening|night` (or `light|dark`) forces a time of day, `?at=2026-06-21T21:10` previews the live sky at another moment, `?nav=top|bottom|auto` picks a navigation prototype (also Shift+N three times on the page). The sun/moon button in the navigation cycles Now, Morning, Day, Evening and Night and remembers the choice.
+
+The live sky uses the real sun: the visitor's place is guessed from their browser time zone (`assets/js/zones.js`, built from the IANA tz database by `scripts/build-zones.mjs`), sunrise, sunset, dawn and dusk come from the NOAA solar equations in `assets/js/sun.js`, and nothing is sent anywhere. Zones without a location (UTC, fixed offsets) fall back to Zürich's latitude.
 
 Font: DotGothic16 by Fontworks, SIL Open Font License (`assets/fonts/OFL.txt`). Map data: Natural Earth (public domain).

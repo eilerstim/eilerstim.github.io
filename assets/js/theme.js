@@ -1,44 +1,65 @@
 // Time of day drives the hero scene (morning, day, evening, night) and the UI theme (night = dark).
-// Default: the system dark preference means night; otherwise the visitor's clock. A toggle cycles
-// through the four and remembers the choice. ?theme=morning|day|evening|night|light|dark forces one.
+// "Now" mode follows the real sun where the visitor is (place guessed from the time zone, no
+// permission asked): phases switch at the actual dawn, sunrise, sunset and dusk, and the sun or moon
+// sits where it really is. A system dark preference keeps the night look.
+// The toggle cycles Now → Morning → Day → Evening → Night. ?theme=... forces a phase, ?at=<ISO time>
+// previews another moment, e.g. ?at=2026-06-21T21:10
 import { toast } from './nav.js';
+import { skyState, MANUAL } from './sun.js';
+import { guessPlace } from './geo.js';
 
-const TIMES = ['morning', 'day', 'evening', 'night'];
-const LABELS = { morning: 'Morning', day: 'Day', evening: 'Evening', night: 'Night' };
+const PHASES = ['morning', 'day', 'evening', 'night'];
+const CYCLE = ['auto', ...PHASES];
+const LABELS = { auto: 'Now', morning: 'Morning', day: 'Day', evening: 'Evening', night: 'Night' };
 const KEY = 'tod';
 
-function autoTime(dark) {
-  if (dark) return 'night';
-  const h = new Date().getHours();
-  if (h >= 5 && h < 10) return 'morning';
-  if (h < 17) return 'day';
-  if (h < 21) return 'evening';
-  return 'night';
-}
 function stored() { try { return localStorage.getItem(KEY); } catch { return null; } }
+function store(v) { try { if (v === 'auto') localStorage.removeItem(KEY); else localStorage.setItem(KEY, v); } catch { /* ignore */ } }
 
 export function initTheme() {
   const html = document.documentElement;
+  const scene = document.querySelector('.scene');
   const mq = window.matchMedia('(prefers-color-scheme: dark)');
-  const param = new URLSearchParams(location.search).get('theme');
-  let time;
-  if (TIMES.includes(param)) time = param;
-  else if (param === 'dark') time = 'night';
-  else if (param === 'light') time = 'day';
-  else { const s = stored(); time = TIMES.includes(s) ? s : autoTime(mq.matches); }
+  const params = new URLSearchParams(location.search);
+  const param = params.get('theme');
+  const atParam = params.get('at');
+  const fixed = atParam ? new Date(atParam) : null;
+  const now = () => (fixed && !Number.isNaN(fixed.getTime()) ? fixed : new Date());
+  const place = guessPlace();
+
+  let mode;
+  if (PHASES.includes(param)) mode = param;
+  else if (param === 'dark') mode = 'night';
+  else if (param === 'light') mode = 'day';
+  else { const s = stored(); mode = PHASES.includes(s) ? s : 'auto'; }
 
   const toggles = document.querySelectorAll('[data-tod-toggle]');
-  const apply = (t, persist) => {
-    time = t;
-    html.dataset.time = t;
-    html.dataset.theme = t === 'night' ? 'dark' : 'light';
-    toggles.forEach((b) => { b.setAttribute('aria-label', `Time of day: ${LABELS[t]}. Change it.`); b.title = LABELS[t]; });
-    if (persist) { try { localStorage.setItem(KEY, t); } catch { /* ignore */ } }
+  const paint = (phase, pos, label) => {
+    html.dataset.time = phase;
+    html.dataset.theme = phase === 'night' ? 'dark' : 'light';
+    if (scene && pos) {
+      scene.style.setProperty('--sun-x', pos.x.toFixed(1));
+      scene.style.setProperty('--sun-y', pos.y.toFixed(3));
+    }
+    toggles.forEach((b) => { b.setAttribute('aria-label', `Time of day: ${label}. Change it.`); b.title = label; });
+    return label;
   };
-  apply(time, false);
+  const render = () => {
+    if (mode !== 'auto') return paint(mode, MANUAL[mode], LABELS[mode]);
+    const sky = skyState(now(), place);
+    if (mq.matches && !fixed) {
+      return paint('night', sky.phase === 'night' ? { x: sky.x, y: sky.y } : MANUAL.night, 'Now: night (your system prefers dark)');
+    }
+    return paint(sky.phase, { x: sky.x, y: sky.y }, `Now: ${LABELS[sky.phase].toLowerCase()} in ${place.name}`);
+  };
+  render();
+
   toggles.forEach((btn) => btn.addEventListener('click', () => {
-    apply(TIMES[(TIMES.indexOf(time) + 1) % TIMES.length], true);
-    toast(LABELS[time]);
+    mode = CYCLE[(CYCLE.indexOf(mode) + 1) % CYCLE.length];
+    store(mode);
+    toast(render());
   }));
-  mq.addEventListener('change', (e) => { if (!stored()) apply(autoTime(e.matches), false); });
+  mq.addEventListener('change', render);
+  setInterval(() => { if (mode === 'auto') render(); }, 60000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && mode === 'auto') render(); });
 }

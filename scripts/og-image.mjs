@@ -30,8 +30,9 @@ await page.goto(url, { waitUntil: 'networkidle' });
 await page.addStyleTag({ content: `
   .nav-top, .nav-bottom, .skip-link, .bio, .hero__actions, .footer, main > .section:not(#about) { display: none !important; }
   body { background-attachment: scroll; }
-  .section--hero { padding: 0; min-height: 630px; display: grid; align-items: center; }
-  .hero { grid-template-columns: 440px 1fr; gap: 48px; align-items: center; }
+  .section--hero { --scene-h: 630px; padding: 0; min-height: 630px; }
+  .hero__title { min-height: 270px; }
+  .hero { grid-template-columns: 440px 1fr; gap: 48px; align-items: start; }
   .container { max-width: 1120px; }
 ` });
 await page.waitForTimeout(400);

@@ -13,7 +13,7 @@ html[data-nav="top"] .nav-top { display: block; }
 @media (min-width: 900px) { html[data-nav="auto"] .nav-top { display: block; } }
 
 .nav-top__inner { display: flex; align-items: center; gap: 1rem; min-height: var(--nav-h); position: relative; }
-.nav-top__brand { font-family: var(--font-pixel); font-size: 1.05rem; letter-spacing: 0.14em; color: var(--on-navy); text-decoration: none; }
+.nav-top__brand { font-family: var(--font-pixel); font-size: 1rem; letter-spacing: 0.14em; color: var(--on-navy); text-decoration: none; }
 .nav-top__brand:hover { color: var(--highlight); }
 .nav-top__list { display: flex; gap: 0.15rem; margin-left: auto; position: relative; padding-bottom: calc(5 * var(--px)); }
 .nav-top .nav-link {

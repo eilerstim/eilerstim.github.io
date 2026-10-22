@@ -12,7 +12,7 @@ Status: built (first version on the working branch). This file is the spec for t
 | Sections | Trainer Card (about), Interests (photo album), Places (visited-country map), Projects, CV, Contact. No blog, skills bars or experience timeline in v1. |
 | You on the page | Real photo inside a pixel frame. No sprite of you. |
 | Interest photos | Natural photos inside pixel album frames with caption plates; click opens a lightbox. |
-| Theme | Four times of day like the DS games: morning, day, evening, night. Night uses the dark UI. Default follows the system dark preference, otherwise the visitor's clock; a sun/moon button cycles through them and remembers the choice. |
+| Theme | Four times of day like the DS games: morning, day, evening, night, driven by the real sun at the visitor's place (guessed from the browser time zone, no location prompt, nothing sent anywhere). Phases switch at the actual dawn, sunrise, sunset and dusk; the sun travels its true arc across a landscape banner and the moon crosses the night. A system dark preference keeps the night look. The sun/moon button cycles Now, Morning, Day, Evening, Night and remembers the choice. |
 | Interaction level | Moderate: typewriter message boxes, a pixel marker that moves along a route as you scroll, a flipping Trainer Card, parallax landscape, continent highlighting and a replay on the map, boxes that pop in on scroll, opt-in 8-bit sounds, one hidden easter egg. Still an ordinary website. |
 | Navigation | Two prototypes shipped behind a hidden switch (top menu in DP pause-menu style, and a Pokétch-style bottom bar). Decide on the live page, then delete the loser. |
 | Language | English only. |
@@ -58,19 +58,19 @@ Contrast target: 4.5:1 for all text in both themes, checked in phase 1.
 
 ### 3.2 Typography
 
-- Headings, labels, captions, dialog text: **DotGothic16** (Google Fonts, SIL Open Font License), self-hosted as a Latin-subset woff2. It reads like a DS bitmap font and stays legible at 16 to 18 px.
-- Paragraphs longer than two lines (bio, project blurbs): system sans stack (`system-ui, -apple-system, "Segoe UI", Roboto, sans-serif`). Readability wins over theme for long text.
+- One font for everything: **DotGothic16** (Google Fonts, SIL Open Font License), self-hosted as a Latin-subset woff2. It is a 16px bitmap-style face, so every size on the page is a multiple of its grid: 12px for small labels, 16px for text, 32px for section titles, 48px for the name.
+- A second typeface made the page look inconsistent, so the sans stack was dropped after the first renders.
 - Pixel art renders with `image-rendering: pixelated`; photos render normally.
 
 ### 3.3 Components (all original art, SVG where possible)
 
 | Component | Description |
 |---|---|
-| Hero scene | Layered pixel landscape behind the hero: sky gradient, drifting clouds (two speeds), mountains with snow caps, tree line, grass strip, sun or moon, stars at night. Tiles are generated procedurally by `scripts/gen-art.mjs` as SVG patterns coloured through CSS variables, so one set of art serves all four times of day. Mountains, trees and sun move with scroll parallax. |
+| Hero scene | A landscape banner across the top of the page: sky gradient, drifting clouds (two speeds), mountains with snow caps, tree line, grass strip, sun or moon, stars at night. The name sits over the mountains like a title screen and the Trainer Card and dialog overlap the tree line below, so the sky above the ridge stays free for the sun. Tiles are generated procedurally by `scripts/gen-art.mjs` as SVG patterns coloured through CSS variables, so one set of art serves all four times of day. Mountains, trees and sun move with eased scroll parallax on their own compositor layers. |
 | Signpost | Wooden sign plate with the section icon in the section colour and the kicker word, on a short post; replaces the plain kicker label. |
 | Message box | White panel, 2px dark border plus 1px inner light line, pixel-rounded corners via a 9-slice `border-image`. Typewriter text with a blinking advance arrow; click to skip. |
 | Menu strip | Navy strip with white DotGothic16 labels, active item marked by a pixel cursor. Basis of the top-navigation prototype. |
-| Trainer Card | Two-sided card. Front: accent header, your photo in a pixel frame, label/value rows with dotted leaders (NAME, LOCATION, ROLE, STARTED, LANGUAGES) and 8 badge slots. Back (click or the FLIP button): a RECORD with live counts of countries, continents, interests and projects. Slight 3D tilt on hover (off under reduced motion). |
+| Trainer Card | Two-sided card. Front: header with card number, your photo in a pixel frame, label/value rows with dotted leaders (NAME, LOCATION, ROLE, STARTED, LANGUAGES) and a badge case of 8 slots showing dimmed pixel badges until yours are entered in `data/site.json`. Back (click or the FLIP button): a RECORD with live counts of countries, continents, interests and projects, and the card tier. The tier upgrades with the countries visited like in the game: blue, bronze at 10, silver at 25, gold at 50; the Konami code gives the black card. Slight 3D tilt on hover (off under reduced motion). |
 | Bottom bar | Fixed bar in a teal watch-style frame with an LCD-green screen. Six pixel icons (card, album, map, folder, document, mail) plus a sound toggle. Active icon inverted. Basis of the bottom-navigation prototype. |
 | Album frame | Cream matte with 2px border and corner tabs, a red pushpin at the top, caption plate underneath in DotGothic16. Lifts on hover. Photo stays natural. |
 | Buttons | Raised pixel buttons; primary in `--accent`; press moves them 1px down with an optional blip. |

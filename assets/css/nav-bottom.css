@@ -41,7 +41,7 @@ html[data-nav="bottom"] body { padding-bottom: calc(var(--bar-h) + env(safe-area
   color: var(--bar-ink);
   text-decoration: none;
   font-family: var(--font-pixel);
-  font-size: 0.62rem;
+  font-size: 0.625rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }

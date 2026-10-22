@@ -19,7 +19,7 @@
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;
-  font-family: var(--font-text);
+  font-family: var(--font-pixel);
   font-size: 1rem;
   line-height: 1.6;
   color: var(--text);
@@ -41,8 +41,9 @@ a:hover { color: var(--accent-2); }
 h1, h2, h3, h4, .pixel { font-family: var(--font-pixel); font-weight: 400; letter-spacing: 0.02em; line-height: 1.25; margin: 0; }
 h1 { font-size: 2rem; }
 h2 { font-size: 1.5rem; }
-h3 { font-size: 1rem; }
+h3 { font-size: 1rem; letter-spacing: 0.04em; }
 @media (min-width: 720px) { h2 { font-size: 2rem; } }
+p { line-height: 1.65; }
 p { margin: 0 0 1em; }
 p:last-child { margin-bottom: 0; }
 ul, ol { margin: 0; padding: 0; list-style: none; }
@@ -53,9 +54,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .skip-link:focus { top: 1rem; }
 .container { width: 100%; max-width: var(--max-w); margin-inline: auto; padding-inline: 1rem; }
 .section { padding-block: 3rem; scroll-margin-top: calc(var(--nav-h) + 1rem); }
-.section--hero { padding-top: 2rem; }
 .section__head { margin-bottom: 1.5rem; }
-.section__lead { color: var(--text-muted); max-width: 46rem; margin-top: 0.5rem; }
+.section__lead { color: var(--text-muted); max-width: 46rem; margin-top: 0.5rem; font-size: 1rem; }
 .muted { color: var(--text-muted); }
 .pixelated { image-rendering: pixelated; image-rendering: crisp-edges; }
 @media (prefers-reduced-motion: reduce) {
@@ -64,5 +64,4 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 }
 @media (min-width: 720px) {
   .section { padding-block: 4rem; }
-  .section--hero { padding-top: 3rem; }
 }

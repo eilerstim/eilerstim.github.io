@@ -38,18 +38,20 @@ export function renderSite(site) {
   const greeting = document.querySelector('[data-greeting]');
   if (greeting && site.greeting) greeting.textContent = site.greeting;
 
+  const DEFAULT_BADGES = ['shield', 'star', 'book', 'trophy', 'key', 'gear', 'flag', 'mountain'];
   const badges = document.querySelector('[data-badges]');
   if (badges) {
     badges.replaceChildren();
     for (let i = 0; i < 8; i++) {
       const b = site.badges?.[i];
-      const slot = el('span', b ? 'slot' : 'slot slot--empty');
+      const slot = el('span', b ? 'slot slot--earned' : 'slot slot--empty');
+      slot.append(icon(`i-badge-${b?.icon || DEFAULT_BADGES[i]}`));
       if (b) {
-        slot.append(icon(`i-badge-${b.icon || 'star'}`));
         slot.title = b.year ? `${b.label} (${b.year})` : b.label;
         slot.setAttribute('role', 'img');
         slot.setAttribute('aria-label', slot.title);
       } else {
+        slot.title = 'Empty badge slot';
         slot.setAttribute('aria-hidden', 'true');
       }
       badges.append(slot);
@@ -192,4 +194,11 @@ export async function loadAll() {
     projects: (projects.items || []).length,
   };
   for (const [k, v] of Object.entries(stats)) setText(`[data-stat="${k}"]`, String(v));
+
+  // card tier, like the game: it upgrades with the countries visited
+  const tier = stats.countries >= 50 ? 'gold' : stats.countries >= 25 ? 'silver' : stats.countries >= 10 ? 'bronze' : 'blue';
+  const card = document.querySelector('[data-card]');
+  if (card) card.dataset.tier = tier;
+  const next = { blue: 10, bronze: 25, silver: 50 }[tier];
+  setText('[data-card-tier]', `${tier[0].toUpperCase()}${tier.slice(1)} card${next ? ` · ${next - stats.countries} more ${next - stats.countries === 1 ? 'country' : 'countries'} to the next tier` : ''}`);
 }
